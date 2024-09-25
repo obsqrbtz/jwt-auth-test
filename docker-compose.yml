@@ -1,0 +1,27 @@
+name: jwt-auth-test
+
+services:
+  jwt-auth-api:
+    container_name: jwt-auth-api
+    tty: true
+    image: obsqrbtz/jwt-auth-api:1.0.0
+    build: .
+    env_file:
+      - .env
+    ports:
+      - "${API_PORT}:3000"
+    restart: on-failure:10
+    depends_on:
+      - jwt-auth-db
+  jwt-auth-db:  
+    container_name: jwt-auth-db
+    image: postgres:latest
+    env_file:
+      - .env
+    ports:
+      - "${POSTGRES_PORT}:${POSTGRES_PORT}"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+
+volumes:  
+  pgdata: {}

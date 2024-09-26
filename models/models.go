@@ -5,10 +5,10 @@ import (
 )
 
 type User struct {
-	ID           string `gorm:"primarykey"`
+	ID           string `gorm:"primarykey:not null"`
 	RefreshToken string `json:"refresh_token"`
 	IP           string `json:"ip"`
-	Email        string `gorm:"unique"`
+	Email        string `gorm:"unique:not null"`
 }
 
 func CreateUser(ip string, email string) User {

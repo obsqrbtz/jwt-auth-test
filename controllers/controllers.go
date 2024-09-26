@@ -42,7 +42,14 @@ func CreateTokens(c *fiber.Ctx) error {
 
 	user.RefreshToken = refreshToken
 
-	database.DB.Create(&user)
+	result := database.DB.Create(&user)
+
+	if result.RowsAffected == 0 {
+		c.Status(fiber.StatusInternalServerError)
+		return c.JSON(fiber.Map{
+			"message": "could not create user",
+		})
+	}
 
 	CreateAccessTokenCookie(c, accessToken)
 
